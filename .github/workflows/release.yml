@@ -6,14 +6,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2204
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: useblacksmith/setup-bun@v1
         with:
           bun-version: latest
 
