@@ -24,7 +24,7 @@ async function saveLog(entry: {
 
 	const row = {
 		timestamp: new Date().toISOString(),
-		conversation_query_id: process.env.CONVERSATION_QUERY_ID ?? "",
+		conversation_query_run_id: process.env.CONVERSATION_QUERY_RUN_ID ?? "",
 		data: JSON.stringify({
 			modelId: entry.modelId,
 			request: entry.request,
