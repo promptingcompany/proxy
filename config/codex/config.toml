@@ -196,14 +196,11 @@ project_doc_fallback_filenames = []
 ################################################################################
 
 [tools]
-# Enable web search tool (alias: web_search_request). Default: false
+# Optional web search tool configuration. Leave unset to use the Codex default.
 # web_search = false
 
 # Enable the view_image tool so the agent can attach local images. Default: true
 # view_image = true
-
-# (Alias accepted) You can also write:
-# web_search_request = false
 
 ################################################################################
 # Centralized Feature Flags (preferred)
@@ -214,7 +211,6 @@ project_doc_fallback_filenames = []
 unified_exec = false
 apply_patch_freeform = false
 view_image_tool = true
-web_search_request = false
 experimental_windows_sandbox = false
 skills = false
 
