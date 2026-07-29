@@ -25,6 +25,9 @@ jobs:
       - name: Test
         run: bun test
 
+      - name: Typecheck
+        run: bunx tsc --noEmit
+
       - name: Build bundle
         run: bun run build
 
