@@ -1,11 +1,12 @@
-name: Build and Upload Release Artifact
+name: CI
 
 on:
-  release:
-    types: [created]
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,8 +31,3 @@ jobs:
 
       - name: Build bundle
         run: bun run build
-
-      - name: Upload artifact to release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*

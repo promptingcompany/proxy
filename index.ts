@@ -3,6 +3,10 @@ import {
 	InvokeModelCommand,
 	InvokeModelWithResponseStreamCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import {
+	configureStreamingRequestTimeout,
+	type RequestTimeoutServer,
+} from "./streaming-timeout";
 
 const bedrockClient = new BedrockRuntimeClient({
 	region: process.env.AWS_REGION || "us-west-2",
@@ -182,12 +186,17 @@ async function handleBedrockInvoke(req: Request) {
 }
 
 // Bedrock streaming handler
-async function handleBedrockStream(req: Request) {
+async function handleBedrockStream(
+	req: Request,
+	server: RequestTimeoutServer,
+) {
 	const url = new URL(req.url);
 	const match = url.pathname.match(
 		/^\/model\/(.+)\/invoke-with-response-stream$/,
 	);
 	if (!match) return new Response("Not found", { status: 404 });
+
+	configureStreamingRequestTimeout(req, server, true);
 
 	const modelId = decodeURIComponent(match[1] ?? "");
 	const body = await req.text();
@@ -266,11 +275,13 @@ async function handleBedrockStream(req: Request) {
 }
 
 // Responses API handler - routes to provider based on model ID
-async function handleResponses(req: Request) {
+async function handleResponses(req: Request, server: RequestTimeoutServer) {
 	const body = (await req.json()) as Record<string, unknown>;
 	const startTime = Date.now();
 	const modelId = body.model as string;
 	const isStreaming = body.stream === true;
+
+	configureStreamingRequestTimeout(req, server, isStreaming);
 
 	// Get provider based on model ID
 	const provider = getProviderForModel(modelId);
